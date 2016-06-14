@@ -1,3 +1,0 @@
-Ninja please
-
-<!-- comments -->
