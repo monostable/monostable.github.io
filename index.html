@@ -1,8 +1,9 @@
 <html>
     <head>
+        <meta charset="UTF-8">
         <title> monostable.co.uk </title>
         <style>
-            div {
+            div#main {
                 width:400px;
                 height:300px;
                 position:absolute;
@@ -19,15 +20,17 @@
         <link href="favicon.png" rel="shortcut icon" type="image/png">
     <head>
     <body>
-        <div>
+        <div id=main>
             <a href=https://blog.monostable.co.uk><img src=banner.png></a>
-            <table>
-                <tr>
-                    <td style="text-align:left;width:33%;"><a style="padding-left:10px;" href=https://blog.monostable.co.uk>blog</a></td>
-                    <td style="text-align:center;width:33%;"><a href=mailto:kaspar@monostable.co.uk>email</a></td>
-                    <td style="text-align:right;"><a style="padding-right:10px;" href=https://github.com/monostable>github</a></td>
-                </tr>
-            </table>
+            <div style="display:flex;justify-content:space-around;">
+                ————
+                <a href=https://blog.monostable.co.uk>blog</a>
+                ————
+                <a href=mailto:kaspar@monostable.co.uk>email</a>
+                ————
+                <a href=https://github.com/monostable>github</a>
+                ————
+            </div>
         </div>
     </body>
 </html>
