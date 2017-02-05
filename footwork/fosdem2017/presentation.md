@@ -1,12 +1,17 @@
 # Footwork
 
 PCB designs as code and EDA as code synthesis
-Slides: `monostable.co.uk/footwork/fosdem2017`
-
-<img style="width:300px;float:right" src=images/mod.svg>
 
 <font size=5>
 Kaspar Emanuel
+
+slides: `goo.gl/gbE2dY` 
+
+or: `monostable.co.uk/footwork/fosdem2017`
+
+
+<img style="width:300px;float:right" src=images/mod.svg>
+
 ---
 
 <img src=images/kicad_logo_paths.svg>
