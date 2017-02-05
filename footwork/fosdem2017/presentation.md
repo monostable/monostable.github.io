@@ -5,12 +5,18 @@ PCB designs as code and EDA as code synthesis
 <font size=5>
 Kaspar Emanuel
 
-slides: `goo.gl/gbE2dY` 
+- slides : goo.gl/gbE2dY
+- or:  monostable.co.uk/footwork/fosdem2017
 
-or: `monostable.co.uk/footwork/fosdem2017`
+<img style="width:200px;float:right" src=images/mod.svg>
 
+???
 
-<img style="width:300px;float:right" src=images/mod.svg>
+- My name is a kaspar
+- Design engineer and software developer
+- Here to talk about some experiments with the kicad footprint format, s-expressions and code synthesis
+- DISCLAIMER: I am a complete beginner at this stuff, if anyone knows anything more about this and what I am saying is completely wrong
+- please don't hesitate to jump in and correct me
 
 ---
 
@@ -19,7 +25,6 @@ or: `monostable.co.uk/footwork/fosdem2017`
 
 
 ???
-- As most people know here KiCAD is a PCB editing suite
 - This all began with the text-based KiCAD formats
 - Quite happy that, if something wasn't supported by the GUI, I can open up a text editor and do it myself
 - The older formats seemed a bit ad-hoc and ugly, but I am a big fan of the newer S-expression based formats
@@ -153,35 +158,44 @@ So the idea would be to implement a language for kicad in racket
 - So you can mix in your general purpose programming langage into the footprint defenition
 - So we have a for loop here, this is more like a map if you are used to functional programming, it will return the statement following it
 - You can recurse arbitrarly deep into this and it will all be flattened at the end
-- Before you get too excited this screen is really showing my program in the best light
-- It can do what is shown here but this isn't actually true to kicad's units or coordinates yet
 
 ---
+```racket
+(define-syntax-rule
+  (module name (layer l) (tedit t) items ...)
+    (draw l items ...)
 
-#A side note on parens
-[Parinfer](https://shaunlebron.github.io/parinfer/) is really nice for beginners
+(define (draw layer . items)
+  (λ (dc) (send dc set-scale 10 10) 
+    (execute-functions (flatten items) 
+      (if [eq? layer 'F.Cu] 'top 'bottom) dc)))
 
-<img src=images/parinfer.gif width=100%>
+(define-syntax-rule
+  (fp_text str (at x y))
+  (λ (side dc)
+    (if [eq? side 'top]
+      (send dc set-text-foreground "blue")
+      (send dc set-text-foreground "red"))
+    (send dc draw-text str x y)))
+```
 
 ???
 
-- This is a little side note for people that are put off by the parentheses
-- As a beginner I found parinfer plugins really nice
-- They are available for quite a few popular editors
-- And it infers your parenthesis from your indentation
-- So as someone that isn't used to putting in all these parentheses
-- That's quite nice  
-- It's probably horrible for seasoneed lispers, but as a beginner is quite nice
+- So this is a kind of slideshow sized summary of the start of implementing the kicad footprint format in racket
+- We define a module to be a drawing of it's items
+- and a drawing to be a function executed with a drawing context that we can be passed in
+- There are some initial checks to see what layer the item footprint is on, the top or the bottom
+- And here we define a text item, fp_text that's the footprint expression and then translate that to calling the appropriate methods on the dc callback
 
 
 ---
-
 <img class=fullheight src=images/screenshot.png> 
 
 ???
 
-- So back to the footwork editor
-- In addition to the programming and text-editing
+- Before you get too excited this screen is really showing my program in the best light
+- It can do what is shown here but this isn't actually true to kicad's units or coordinates yet
+- But just to get ahead of myself a bit and think about the future of this, i thought at some point in the future 
 - It would also be quite nice to add graphical or "direct" manipulation 
 
 ---
@@ -206,7 +220,8 @@ How can you make arbitrary constructs like this
 
 ???
 
-- So I started researching into how can I get my program to make arbitrary constructs like this
+- But as far as I could tell so far with sketch and sketch, it won't construct loops for you yet
+- and I started researching into how can I get my program to make arbitrary constructs like this
 - And I found out about code synthesis 
 
 ---
@@ -288,4 +303,4 @@ Slides: `monostable.co.uk/footwork/fosdem2017`
 - https://emina.github.io/rosette/
 - "Synthesis and Verification for All" - Emina Torlak, [Sixth RacketCon](http://con.racket-lang.org/)
 ([Youtube](https://www.youtube.com/watch?v=nOyIKCszNeI&list=PLXr4KViVC0qKSiKGO6Vz9EtxUfKPb1Ma0))
-- Screencasts and assignements from CS294 "Programming Synthesis for All" Berkely (maybe lost?)
+- Screencasts and assignments from CS294 "Programming Synthesis for All" Berkely (maybe lost?)
