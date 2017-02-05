@@ -1,6 +1,7 @@
 # Footwork
 
 PCB designs as code and EDA as code synthesis
+Slides: `monostable.co.uk/footwork/fosdem2017`
 
 <img style="width:300px;float:right" src=images/mod.svg>
 
@@ -277,6 +278,7 @@ Even more possibility than my weird footprint editor!
 ---
 Comments, suggestions,  questions?
 
+Slides: `monostable.co.uk/footwork/fosdem2017`
 - https://github.com/monostable/footwork
 - https://emina.github.io/rosette/
 - "Synthesis and Verification for All" - Emina Torlak, [Sixth RacketCon](http://con.racket-lang.org/)
