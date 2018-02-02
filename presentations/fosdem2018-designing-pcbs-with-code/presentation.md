@@ -1,6 +1,6 @@
 <video style="width:200%;left:0px;top:0px;position:absolute;" controls=false autoplay=true loop=true src=generative_circuit.mp4 />
 <h1 class=box_textshadow style="left:200px;top:100px;position:absolute;color:white" >Designing PCBs with code</h1>
-<h2 class=box_textshadow style="left:470px;top:200px;position:absolute;color:white" >by Kaspar</h2>
+<h2 class=box_textshadow style="left:470px;top:200px;position:absolute;color:white" >by Kaspar Emanuel</h2>
 <h6 class=box_textshadow style="left:800px;top:600px;position:absolute;color:white" >animation: <a style=color:inherit; href=https://twitter.com/ExUtumno>@ExUtumno</a></h6>
 
 ???
@@ -8,7 +8,7 @@
 
 ---
 
-Kaspar 
+About Me
 
 - Freelance electronic engineer and software developer
 - Love writing code and love open source (especially electronics)
@@ -17,7 +17,7 @@ Kaspar
 ![](../images/vrgo-braille-3.png)
 
 ???
- 
+
 - These are some projects that I work on, ones a chair controller for virtual reality another is a braille e-book reader
 
 ---
@@ -29,8 +29,8 @@ Kaspar
 - You will notice I like to code and that I like hardware
 - But I didn't say I like designing hardware all the much
 - I get very frustrated with designing electronic circuits
-- This is how it is typically done 
-- Generally you have a schematic entry tool 
+- This is how it is typically done
+- Generally you have a schematic entry tool
 - And PCB layout tool
 - You draw out a schematic, which is a sort of map where you want all your connections to go.
 - And then place them onto a model of a board and route the connections your previously defined
@@ -65,7 +65,7 @@ use IEEE.std_logic_1164.all;
 
 -- this is the entity
 entity ANDGATE is
-  port ( 
+  port (
     I1 : in std_logic;
     I2 : in std_logic;
     O  : out std_logic);
@@ -113,14 +113,14 @@ module adc_simple(clk, dout, vref, vin);
     electrical vref, vin;
 	logic clk;
 	reg [bits-1:0] dout;
-	// Internal variables	
+	// Internal variables
 	real ref, sample;
 	integer i;
   ...
 ```
 ???
 
-- People have tried to extend HDLs for analog and mixed signal design 
+- People have tried to extend HDLs for analog and mixed signal design
 - Verilog-A was defined in 1993 and it was merged into Verilog-AMS in 2000
 
 ---
@@ -137,7 +137,7 @@ entity DIODE is
    generic (iss : current := 1.0e-14;  -- Saturation current
             af  : real    := 1.0;      -- Flicker noise coefficient
             kf  : real    := 0.0);     -- Flicker noise exponent
-   port (terminal anode, cathode : electrical);      
+   port (terminal anode, cathode : electrical);
 end entity DIODE;
 
 architecture IDEAL of DIODE is
@@ -149,7 +149,7 @@ begin
 
 end architecture IDEAL;
 ```
-	
+
 - Also: "Circuit Description Language" (Taku Noda, IPST 1999)
 
 ???
@@ -160,7 +160,17 @@ end architecture IDEAL;
 - The focus of these seems on simulation and verification
 - Rather than just pure schematic entry
 - So that means you have to know a lot about the behaviour of your circuits
-- What we want is something to help us create netlists just as we do from schematics 
+- What we want is something to help us create netlists just as we do from schematics
+
+---
+
+# What do people want when they want to make hardware more like software?
+
+1. Fast build to test iteration cycles
+
+2. Use programming constructs for a faster/better design process
+
+3. Modularity and re-usability
 
 ---
 
@@ -196,7 +206,7 @@ design top {
 ```
 ???
 - So that's what PHDL, the PCB Hardware Description Language is
-- This is the earliest project that I found that has this focus 
+- This is the earliest project that I found that has this focus
 - it was created in 2011
 - It has quite a clean syntax for defining devices and their connections
 - There are more advanced language features that didn't fit on the slide as well
@@ -225,9 +235,9 @@ design top {
 ---
 # SKiDL
 
-- Created in 2016 
-- A domain specific language embedded in Python 
-- Outputs KiCad netlists 
+- Created in 2016
+- A domain specific language (?) embedded in Python
+- Outputs KiCad netlists
 
 ```python
 from skidl import *
@@ -237,7 +247,7 @@ vin = Net('vin')   # Input voltage to the divider.
 vout = Net('vout')  # Output voltage from the divider.
 r1, r2 = 2 * Part('device', 'R', TEMPLATE)  # Create two resistors.
 r1.value, r1.footprint = '1K',  'Resistors_SMD:R_0805'  # Set resistor values
-r2.value, r2.footprint = '500', 'Resistors_SMD:R_0805'  # and footprints.
+r2.value, r2.footprint = '1K', 'Resistors_SMD:R_0805'  # and footprints.
 r1[1] += vin      # Connect the input to the first resistor.
 r2[2] += gnd      # Connect the second resistor to ground.
 vout += r1[2], r2[1]  # Output comes from the connection of the two resistors.
@@ -249,46 +259,43 @@ generate_netlist()
 
 - The next one I came across was SKiDL
 - So this is Python
-- There is a bit of operator overloading going on here which might confuse you 
+- There is a bit of operator overloading going on here which might confuse you
 - But it's essentially a set of classes to help you design circuits
 - An you can then do the rest of your design in the KiCad layout tool
 
 ---
 
-# PyCircuit
-- Created in 2017 
-- A domain specific language embedded in Python 
+# pycircuit
+- Created in 2017
+- A domain specific language embedded in Python
 - Outputs KiCad netlists
 
 
 ```python
-from pycircuit import *
-Footprint('R0805', 'R', '0805',
-          Map(1, '1'),
-          Map(2, '2'))
-@circuit('TOP')
-def top():
-    Node('R1', 'R')
-    Node('R2', 'R')
-    Ref('R1')['1'] + Net('VCC')  
-    Ref('R1')['2'] + Net('Vout')
-    Ref('R2')['1'] + Net('Vout')
-    Ref('R2')['2'] + Net('GND')
+@circuit('Voltage Divider', 'gnd', None, 'vin', 'vout')
+def voltage_divider(self, gnd, vin, vout):
+    Inst('R', '1k 0805')['~', '~'] = vin, vout
+    Inst('R', '1k 0805')['~', '~'] = vout, gnd
+
+@circuit('Top')
+def top(self):
+    vin, vout, gnd = nets('vin vout gnd')
+    SubInst(voltage_divider())['vin', 'vout', 'gnd'] = vin, vout, gnd
 ```
 
 ???
 
-- PyCircuit is also a very recent project for designing circuits using Python 
+- pycircuit is also a very recent project for designing circuits using Python
 - In fact it's so very much in flux that this slide is out of date already
 - It has some interesting experimental features, one is this idea that you break up your component definitions into several sub-functions
 
 
 ---
 
-# PHDL, SKiDL and PyCircuit
+# PHDL, SKiDL and pycircuit
 - Pros:
   - Define once and re-use
-  - Use for-loops, slice notation 
+  - Use for-loops, slice notation
 - Issues:
   - It's hard to visualize
   - Circuit definition can still be very tedious
@@ -302,7 +309,7 @@ def top():
   - Circuit definition can still be very tedious
   - It's hard to visualize
   - Debugging could easily become a nightmare
-- So I want to  
+- So I want to
 
 ---
 
@@ -312,7 +319,7 @@ def top():
 
 ???
 
-- So let's cover visualisation, that's something I have been looking into recently. 
+- So let's cover visualisation, that's something I have been looking into recently.
 - Schematics, even though I don't necessarily want to draw them, I do want to read them
 
 
@@ -321,7 +328,7 @@ def top():
 ### SKiDL
 
 <div style=display:flex;justify-content:center>
-<img src=../images/skidl_graph.png> 
+<img src=../images/skidl_graph.png>
 </div>
 
 ???
@@ -329,12 +336,12 @@ def top():
 - To SKiDL I contributed a bit of code to output Graphviz graphs
 - If you don't know graphviz, it's quite a nifty tool to draw graphs without actually having to draw them
 - So it's a sort of programmatic description of graphs
-- So I tried to make this similar to schematics, but it's obviously a bit different 
+- So I tried to make this similar to schematics, but it's obviously a bit different
 
 
 ---
 
-### PyCircuit
+### pycircuit
 
 <div style=display:flex;justify-content:center>
 <img style=height:500px; src=../images/pycircuit_graph.png />
@@ -342,8 +349,8 @@ def top():
 
 ???
 
-- For PyCircuit there's also a Graphviz output created by PyCircuit's creator David Craven
-- The reason this looks like this is you can do layout with PyCircuit as well 
+- For pycircuit there's also a Graphviz output created by pycircuit's creator David Craven
+- The reason this looks like this is you can do layout with pycircuit as well
 - So this is used to highlight nets in the interactive viewer, that's why you have such big clickable nodes here
 
 
@@ -355,7 +362,7 @@ def top():
 ???
 
 - So even more recently I came across something called netlistsvg
-- This converts Yosys netlists to very nice looking schematics 
+- This converts Yosys netlists to very nice looking schematics
 - This uses KlayJS, or soon to be ELKJS which is the Eclipse Layout Kernel under the hood
 - Which uses a similar algorithm to Graphviz
 
@@ -420,28 +427,65 @@ def top():
 - So we should use that as part of our circuit description languages
 - This is currently in Javascript, but I am working on a Python port in the hopes of contributing this to the aforemention Python DSLs
 
+---
 
+## Electro Grammar v1
+
+- Uses Nearley: JS only
+- SMD only: Capacitors, Resistors and LEDs
+- Lax parser only (any-order, ignores invalid input)
+
+<br/>
+
+
+
+## Electro Grammar v2
+
+- Uses Antlr4: JS, Python, Java, C++, Go
+- SMD & Through-Hole: Capacitors, Resistors, LEDs, Diodes, Transistors
+- Strict and lax parser
 
 ---
-# RepliCAD
-
-- A domain specific language in Javascript
-- Doesn't exist yet
-- Goals:
-  - Confirm Atwood's Law 
-  - Make it easier to design and reason about circuits
-  - Static analysis to make it very hard to create bugs 
-  - Interactive editor with netlistsvg
 
 ```js
-let {Resistor, Nets, Circuit} = require('replicad')
-let r1 = Resistor('1k 0603')
-let r2 = r1.copy()
-let [vcc, vout, gnd] = Nets(3)
-let circuit = Circuit()
-circuit.connect_through(vcc, r1, vout, r2, gnd)
-export circuit
+
+const {Resistor, Power, Ground, Output} = require('replicad')
+
+function resistorDivider(value1, value2) {
+  const r1 = Resistor(value1)
+  const r2 = Resistor(value2)
+
+  const vcc = Power()
+  const gnd = Ground()
+
+  const vout = Output()
+
+  const circuit = Circuit()
+  circuit.chain(vcc, r1, vout, r2, gnd);
+  return circuit
+}
+
+
+const circuit = resistorDivider('1k', '500 ohm')
+
 ```
+- A domain specific language in Javascript
+- Work in progess!
+---
+# replicad
+- Goals:
+  - Initial goal is to offer netlist/schematic entry only
+  - Make it easier to design and reason about circuits
+  - Confirm Atwood's Law
+  - Static analysis to make it very hard to create bugs
+  - Encourage design re-use
+  - Interactive editor with netlistsvg
+- Implementation details:
+  - Typescript transform to bind variable names to components
+  - Electro-Grammar integration
+  - Integrated "atomic" KiCad components library
+
+
 
 
 ???
@@ -452,21 +496,26 @@ export circuit
 
 - PHDL: beta (and some bitrot since 2012)
 - SKiDL: alpha
-- PyCircuit: experimental
-- RepliCAD: vaporware
+- pycircuit: experimental
+- replicad: vaporware?
 
 <img style=width:300px src="../images/stumble.png" />
 
 ---
-# What about layout and footprints?
+## What about footprints?
 
 - KicadModTree: a Python DSL for KiCad footprints
 
-- PyCircuit: DSL for footprints, experimental layout and routing using SMT solvers
+- qeda: A Coffeescript/Javascript utility for schematic symbol and footprint generation
 
-- Footwork: very experimental and also stagnated KiCad footprint (text) editor combining Racket (Scheme) and the KiCad s-expression format
+## What about layout?
+
+- pycircuit: DSL for footprints, experimental layout and routing using SMT solvers
+
+- KiCad python scripting
 
 ---
+
 # What do people want when they want to make hardware more like software?
 
 1. Fast build to test iteration cycles
@@ -489,7 +538,7 @@ export circuit
 ???
 
 - And I'd be amiss not to plug the project where on which I spend most of my free time
-- Which is kitspace.org, a registry for electronics designs, 
+- Which is kitspace.org, a registry for electronics designs,
 - You can put up projects made in any way on there and it makes it easier for people to re-build other peoples projects
 - With it I am trying to create an NPM or Python Package index of reusable electronics projects
 - And it would be really interesting to hook into the design reuse features of whatever design tool people are using
@@ -498,7 +547,7 @@ export circuit
 <video style="width:200%;left:0px;top:0px;position:absolute;" controls=false autoplay=true loop=true src=generative_circuit.mp4 />
 <h1 class=box_textshadow style="left:200px;top:100px;position:absolute;color:white" >Questions?</h1>
 <h2 class=box_textshadow style="left:200px;top:200px;position:absolute;color:white" >github.com/kasbah</h2>
-<h3 class=box_textshadow style="left:200px;top:300px;position:absolute;color:white" >Thanks to: Brent Nelson and co (PHDL), Dave Vandebout (SKiDL), David Craven (PyCircuit), Neil Turely (netlistsvg) and all contributors to Graphviz and ELK </h3>
+<h3 class=box_textshadow style="left:200px;top:300px;position:absolute;color:white" >Thanks to: Brent Nelson and co (PHDL), Dave Vandebout (SKiDL), David Craven (pycircuit), Neil Turely (netlistsvg) and all contributors to Graphviz and ELK </h3>
 
 <h6 class=box_textshadow style="left:800px;top:600px;position:absolute;color:white" >animation: <a style=color:inherit; href=https://twitter.com/ExUtumno>@ExUtumno</a></h6>
 

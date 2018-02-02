@@ -65,7 +65,7 @@ Hackaday.io, blogs, etc...
 ???
 
 - Electronics is completely and utterly about making connections
-- And the only way to get better and knowing what connections to make is to try it out
+- And the only way to get better at knowing what connections to make is to try it out
 - This is called a breadboard and it's the best way to get started learning about electronics
 - You can plug different components in, and see what happens
 - The one thing that trips people up is that from the outside you can't see where the connections are being made for you when to plug things in so this picture of the inside is really valuable to take a look at before you start
@@ -323,6 +323,23 @@ Hackaday.io, blogs, etc...
 
 - And after a bit of practice it's easy to spot typical soldering problems
 
+
+---
+
+<img width=30% src=images/solder1.jpg />
+<img width=30% src=images/solder_rosin.jpg />
+<img width=30% src=images/flux_pen.jpg />
+<img width=30% src=images/solder_paste.jpg />
+
+
+???
+
+- So the actually solder, it comes in these wires
+- It comes leaded and unleaded and as a beginner you do want to start out with a leaded solder, because it's easier to work with
+- You want to use a thinner wire for most things, unless you are soldering on bigger pins in which case you want a thicker one
+- Solder wire is normally flux core, so flux helps dissipate oxidation layers so really helps your solder flow
+- And you can get separate flux as well and you might want to selectively apply that in places before you solder
+
 ---
 
 <img src=images/soldering_gnu.svg class=fullscreen />
@@ -333,6 +350,7 @@ Hackaday.io, blogs, etc...
 - Get as comfortable as possible
 - Really lean over and slouch and get relaxed, take all the weight of your body and it makes it much easier to keep your hand steady
 - And of course, good lighting is crucial and use magnification when you feel you need to see better
+
 
 
 ---
@@ -385,6 +403,28 @@ Reflow soldering
 
 ---
 
+# FPGA E-Ink Controller
+
+
+<img src=images/ice40_eink.jpg width=70%>
+
+
+---
+
+# AAduino
+## An AA sized ISM radio Arduino clone
+<img src=images/aaduino.jpg>
+
+---
+
+# 8Bitmixtape
+## lo-fi 8Bit synthesizer based on the ATTINY85
+<img src=images/8bitmixtape.gif>
+
+
+
+---
+
 ## Learn more at your local hackspace!
 
 <img style="height:100px" src=images/hackspace.png />
@@ -399,7 +439,7 @@ Reflow soldering
 
 ---
 
-# If you like hardware:
+# If you like electronics:
 
 - kitspace.org
 - awesome-electronics list: git.io/vNdO9
