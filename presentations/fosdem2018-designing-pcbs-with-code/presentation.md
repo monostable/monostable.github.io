@@ -164,13 +164,54 @@ end architecture IDEAL;
 
 ---
 
-# What do people want when they want to make hardware more like software?
+#SPICE
 
-1. Fast build to test iteration cycles
+```spice
+AMP2.CIR – CASCADED OPAMPS
+*
+VS	1	0	AC	1	SIN(0 1 10KHZ)
+*
+R1	1	2	5K
+R2	2	3	10K
+XOP1	0 2	3	OPAMP1
+R3	4	0	10K
+R4	4	5	10K
+XOP2	3 4	5	OPAMP1
+*
+* SINGLE-POLE OPERATIONAL AMPLIFIER MACRO-MODEL
+* connections:      non-inverting input
+*                   |   inverting input
+*                   |   |   output
+*                   |   |   |
+.SUBCKT OPAMP1      1   2   6
+* INPUT IMPEDANCE
+RIN     1          2          10MEG
+* DC GAIN (100K) AND POLE 1 (100HZ)
+EP1	3 0	1 2	100K
+RP1	3	4	1K
+CP1	4	0	1.5915UF
+* OUTPUT BUFFER AND RESISTANCE
+EOUT	5 0	4 0	1
+ROUT	5	6	10
+.ENDS
+*
+* ANALYSIS
+.TRAN	0.01MS  0.2MS
+* VIEW RESULTS
+.PLOT TRAN V(1) V(5)
+.END
+```
 
-2. Use programming constructs for a faster/better design process
+---
+
+## What do people want when they want to make hardware more like software?
+
+1. Fast build/test iteration cycles
+
+2. Use programming constructs and tools for a faster/better design process
 
 3. Modularity and re-usability
+
 
 ---
 
@@ -236,7 +277,7 @@ design top {
 # SKiDL
 
 - Created in 2016
-- A domain specific language (?) embedded in Python
+- A library/language in Python
 - Outputs KiCad netlists
 
 ```python
@@ -263,12 +304,40 @@ generate_netlist()
 - But it's essentially a set of classes to help you design circuits
 - An you can then do the rest of your design in the KiCad layout tool
 
+
+---
+
+```python
+
+from skidl import *
+
+# Define the voltage divider module. The @subcircuit decorator
+# handles some skidl housekeeping that needs to be done.
+@subcircuit
+def vdiv(inp, outp):
+    """Divide inp voltage by 3 and place it on outp net."""
+    rup = Part('device', 'R', value='1K', footprint='Resistors_SMD:R_0805')
+    rlo = Part('device','R', value='500', footprint='Resistors_SMD:R_0805')
+    rup[1,2] += inp, outp
+    rlo[1,2] += outp, gnd
+
+gnd = Net('GND')         # GLobal ground net.
+input_net = Net('IN')    # Net with the voltage to be divided.
+output_net = Net('OUT')  # Net with the divided voltage.
+
+# Instantiate the voltage divider and connect it to the input & output nets.
+vdiv(input_net, output_net)
+
+generate_netlist()
+
+```
+
 ---
 
 # pycircuit
 - Created in 2017
-- A domain specific language embedded in Python
-- Outputs KiCad netlists
+- A library/language in Python
+- Outputs KiCad PCB files and Yosys netlists
 
 
 ```python
@@ -289,10 +358,75 @@ def top(self):
 - In fact it's so very much in flux that this slide is out of date already
 - It has some interesting experimental features, one is this idea that you break up your component definitions into several sub-functions
 
+---
+
+# Pycircuit for layout
+
+
+```python
+
+def place(fin, fout):
+    p = Placer()
+    p.place(fin, fout)
+
+
+def route(fin, fout):
+    r = Router(grid_size=.5, maxflow_enforcement_level=3)
+    r.route(fin, fout)
+
+
+outline = rectangle_with_mounting_holes(20, 10, inset=1, hole_shift=2, hole_dia=1)
+
+Builder(top(), outline=outline,
+	pcb_attributes=oshpark_2layer(),
+
+```
+
+---
+```js
+// replicad
+
+var {Resistor, Power, Ground, Output} = require('replicad')
+
+function resistorDivider(value1, value2) {
+  var r1 = Resistor(value1)
+  var r2 = Resistor(value2)
+
+  var vcc = Power()
+  var gnd = Ground()
+
+  var vout = Output()
+
+  var circuit = Circuit()
+  circuit.chain(vcc, r1, vout, r2, gnd);
+  return circuit
+}
+
+
+var circuit = resistorDivider('1k', '500 ohm')
+
+```
+- A domain specific language in Javascript
+- Work in progess!
+---
+# replicad
+- Goals:
+  - Initial goal is to offer netlist/schematic entry only
+  - Make it easier to design and reason about circuits
+  - Confirm Atwood's Law
+  - Static analysis to make it very hard to create bugs
+  - Encourage design re-use
+
+- Implementation details:
+  - Variable names are used as schematic references
+  - Circuit objects are explictely modified by adding connections
+  - Function arguments are parameters not inputs/outputs
+???
+
 
 ---
 
-# PHDL, SKiDL and pycircuit
+# PCB hardware description languages
 - Pros:
   - Define once and re-use
   - Use for-loops, slice notation
@@ -337,8 +471,6 @@ def top(self):
 - If you don't know graphviz, it's quite a nifty tool to draw graphs without actually having to draw them
 - So it's a sort of programmatic description of graphs
 - So I tried to make this similar to schematics, but it's obviously a bit different
-
-
 ---
 
 ### pycircuit
@@ -383,22 +515,24 @@ def top(self):
 - But I think this is really promising and will be investing some time into this, and enabling these languages to make use of this
 
 
+---
+<img src=images/netlistsvg2.png>
+
+
 
 ---
-# Removing Tedium
-
-<img src=../images/charlie.jpg />
+# The language of electronics
+<img src=images/oxford.jpg />
 
 ???
 
-- I have also been thinking about how to make the code writing process, the definition of circuits less tedius
 
 ---
 
-# Electro Grammar
+## Electro Grammar ([demo](https://monostable.github.io/electro-grammar))
 
 ```js
-> let {parse} = require('electro-grammar')
+> var {parse} = require('electro-grammar')
 
 > parse('100nF 0603 C0G 10% 25V')
 { type: 'capacitor',
@@ -431,70 +565,23 @@ def top(self):
 
 ## Electro Grammar v1
 
-- Uses Nearley: JS only
-- SMD only: Capacitors, Resistors and LEDs
+- JavaScript only
+- Capacitors, resistors and LEDs (SMD only)
 - Lax parser only (any-order, ignores invalid input)
-
-<br/>
-
-
 
 ## Electro Grammar v2
 
-- Uses Antlr4: JS, Python, Java, C++, Go
-- SMD & Through-Hole: Capacitors, Resistors, LEDs, Diodes, Transistors
+- Work in progress!
+- Uses Antlr4: JavaScript, Python, Java, C (& C++), Go
+- Capacitors, resistors, LEDs, diodes, transistors (SMD & through-hole)
 - Strict and lax parser
 
 ---
 
-```js
-
-const {Resistor, Power, Ground, Output} = require('replicad')
-
-function resistorDivider(value1, value2) {
-  const r1 = Resistor(value1)
-  const r2 = Resistor(value2)
-
-  const vcc = Power()
-  const gnd = Ground()
-
-  const vout = Output()
-
-  const circuit = Circuit()
-  circuit.chain(vcc, r1, vout, r2, gnd);
-  return circuit
-}
-
-
-const circuit = resistorDivider('1k', '500 ohm')
-
-```
-- A domain specific language in Javascript
-- Work in progess!
----
-# replicad
-- Goals:
-  - Initial goal is to offer netlist/schematic entry only
-  - Make it easier to design and reason about circuits
-  - Confirm Atwood's Law
-  - Static analysis to make it very hard to create bugs
-  - Encourage design re-use
-  - Interactive editor with netlistsvg
-- Implementation details:
-  - Typescript transform to bind variable names to components
-  - Electro-Grammar integration
-  - Integrated "atomic" KiCad components library
-
-
-
-
-???
-
----
 
 # Should you use it?
 
-- PHDL: beta (and some bitrot since 2012)
+- PHDL: alpha (and some bitrot since 2012)
 - SKiDL: alpha
 - pycircuit: experimental
 - replicad: vaporware?
@@ -516,11 +603,12 @@ const circuit = resistorDivider('1k', '500 ohm')
 
 ---
 
+
 # What do people want when they want to make hardware more like software?
 
-1. Fast build to test iteration cycles
+1. Fast build/test iteration cycles
 
-2. Use programming constructs for a faster/better design process
+2. Use programming constructs and tools for a faster/better design process
 
 3. Modularity and re-usability
 
@@ -531,6 +619,14 @@ const circuit = resistorDivider('1k', '500 ohm')
 - I have talked a lot about improving the design process
 - All of these languages hope to give you the ability to reuse bits of designs
 - Either through language native module systems or otherwise
+
+---
+# Diffs
+
+<img width=49% src=images/geda_diff.png/>
+<img width=49% src=images/schematic_diff_norm.jpg/>
+
+
 
 ---
 <img class=fullscreen src=../images/kitspace_full.svg />
@@ -544,10 +640,20 @@ const circuit = resistorDivider('1k', '500 ohm')
 - And it would be really interesting to hook into the design reuse features of whatever design tool people are using
 
 ---
-<video style="width:200%;left:0px;top:0px;position:absolute;" controls=false autoplay=true loop=true src=generative_circuit.mp4 />
-<h1 class=box_textshadow style="left:200px;top:100px;position:absolute;color:white" >Questions?</h1>
-<h2 class=box_textshadow style="left:200px;top:200px;position:absolute;color:white" >github.com/kasbah</h2>
-<h3 class=box_textshadow style="left:200px;top:300px;position:absolute;color:white" >Thanks to: Brent Nelson and co (PHDL), Dave Vandebout (SKiDL), David Craven (pycircuit), Neil Turely (netlistsvg) and all contributors to Graphviz and ELK </h3>
+Questions?
 
-<h6 class=box_textshadow style="left:800px;top:600px;position:absolute;color:white" >animation: <a style=color:inherit; href=https://twitter.com/ExUtumno>@ExUtumno</a></h6>
+- github.com/kasbah
+
+<br/>
+
+Thanks to:
+- Brent Nelson and co (PHDL),
+- Dave Vandebout (SKiDL),
+- David Craven (pycircuit),
+- Neil Turely (netlistsvg)
+- All contributors to:
+   - Graphviz
+   - ELK and ELKJS
+   - Nearley parser generator
+   - Antlr4 parser generator
 
