@@ -1,7 +1,7 @@
 <video style="width:200%;left:0px;top:0px;position:absolute;" controls=false autoplay=true loop=true src=generative_circuit.mp4 />
 <h1 class=box_textshadow style="left:200px;top:100px;position:absolute;color:white" >Designing PCBs with code</h1>
 <h2 class=box_textshadow style="left:470px;top:200px;position:absolute;color:white" >by Kaspar Emanuel</h2>
-<h6 class=box_textshadow style="left:800px;top:600px;position:absolute;color:white" >animation: <a style=color:inherit; href=https://twitter.com/ExUtumno>@ExUtumno</a></h6>
+<h6 class=box_textshadow style="left:750px;top:550px;position:absolute;color:white" >animation: <a style=color:inherit; href=https://twitter.com/ExUtumno>@ExUtumno</a></h6>
 
 ???
 
@@ -85,7 +85,7 @@ end architecture RTL;
 
 ---
 
-![](../images/hackrf_schematic.png)
+<img class=fullscreen src=../images/hackrf_schematic.png />
 
 ???
 - So schematic entry for PCB designs can get quite confusing as well
@@ -378,7 +378,7 @@ def route(fin, fout):
 outline = rectangle_with_mounting_holes(20, 10, inset=1, hole_shift=2, hole_dia=1)
 
 Builder(top(), outline=outline,
-	pcb_attributes=oshpark_2layer(),
+	pcb_attributes=oshpark_2layer())
 
 ```
 
@@ -408,8 +408,11 @@ var circuit = resistorDivider('1k', '500 ohm')
 ```
 - A domain specific language in Javascript
 - Work in progess!
+
 ---
-# replicad
+
+#### replicad
+<font size=5>
 - Goals:
   - Initial goal is to offer netlist/schematic entry only
   - Make it easier to design and reason about circuits
@@ -449,7 +452,7 @@ var circuit = resistorDivider('1k', '500 ohm')
 
 #Visualization
 
-<img style=height:500px src=../images/schematic.jpg>
+<img style=height:450px src=../images/schematic.jpg>
 
 ???
 
@@ -471,20 +474,6 @@ var circuit = resistorDivider('1k', '500 ohm')
 - If you don't know graphviz, it's quite a nifty tool to draw graphs without actually having to draw them
 - So it's a sort of programmatic description of graphs
 - So I tried to make this similar to schematics, but it's obviously a bit different
----
-
-### pycircuit
-
-<div style=display:flex;justify-content:center>
-<img style=height:500px; src=../images/pycircuit_graph.png />
-</div>
-
-???
-
-- For pycircuit there's also a Graphviz output created by pycircuit's creator David Craven
-- The reason this looks like this is you can do layout with pycircuit as well
-- So this is used to highlight nets in the interactive viewer, that's why you have such big clickable nodes here
-
 
 ---
 <a href=https://github.com/nturley/netlistsvg>
@@ -516,10 +505,7 @@ var circuit = resistorDivider('1k', '500 ohm')
 
 
 ---
-<img src=images/netlistsvg2.png>
-
-
-
+<img src=pycircuit_ce.svg class=fullscreen />
 ---
 # The language of electronics
 <img src=images/oxford.jpg />
