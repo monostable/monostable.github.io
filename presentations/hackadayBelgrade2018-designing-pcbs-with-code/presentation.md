@@ -14,7 +14,7 @@ About Me
 - Love writing code and love open source (especially electronics)
 - [github.com/kasbah](https://github.com/kasbah)
 
-![](../images/vrgo-braille-3.png)
+![](images/vrgo-braille-kitspace.png)
 
 ???
 
@@ -355,49 +355,75 @@ def top(self):
 ???
 
 - pycircuit is also a very recent project for designing circuits using Python
-- In fact it's so very much in flux that this slide is out of date already
 - It has some interesting experimental features, one is this idea that you break up your component definitions into several sub-functions
 
 ---
 
-# Pycircuit for layout
-
 
 ```python
+# pycircuit for place and route
 
-def place(fin, fout):
-    p = Placer()
-    p.place(fin, fout)
+def place(filein, fileout):
+    placer = Placer()
+    placer.place(filein, fileout)
 
+def route(filein, fileout):
+    router = Router()
+    router.route(filein, fileout)
 
-def route(fin, fout):
-    r = Router(grid_size=.5, maxflow_enforcement_level=3)
-    r.route(fin, fout)
-
-
-outline = rectangle_with_mounting_holes(20, 10, inset=1, hole_shift=2, hole_dia=1)
-
-Builder(top(), outline=outline,
-	pcb_attributes=oshpark_2layer())
-
+Builder(joule_thief.top(), oshpark_4layer,
+	place=place, route=route).build()
 ```
 
+<img src=images/pycircuit_layout.png style=width:100%>
+
 ---
+
+## Footprints
+
+- KicadModTree: a Python DSL for KiCad footprints
+
+- qeda: A Coffeescript/Javascript utility for schematic symbol and footprint generation
+
+```yaml
+name: D-MMA
+description: MiniMelf Diode (MMA)
+keywords: Diode
+schematic:
+  symbol: diode
+housing:
+  pattern: MELF
+  options: polarized
+  bodyDiameter: 1.3-1.4
+  bodyLength: 3.4-3.6
+  leadLength: 0.65-0.85
+```
+
+
+---
+
+## Footwork
+
+![](images/footwork.png)
+
+---
+
+
 ```js
 // replicad
 
 var {Resistor, Power, Ground, Output} = require('replicad')
 
 function resistorDivider(value1, value2) {
-  var r1 = Resistor(value1)
-  var r2 = Resistor(value2)
+  var r1 = new Resistor(value1)
+  var r2 = new Resistor(value2)
 
-  var vcc = Power()
-  var gnd = Ground()
+  var vcc = new Power()
+  var gnd = new Ground()
 
-  var vout = Output()
+  var vout = new Output()
 
-  var circuit = Circuit()
+  var circuit = new Circuit()
   circuit.chain(vcc, r1, vout, r2, gnd);
   return circuit
 }
@@ -407,7 +433,7 @@ var circuit = resistorDivider('1k', '500 ohm')
 
 ```
 - A domain specific language in Javascript
-- Work in progess!
+- Work in progress!
 
 ---
 
@@ -422,7 +448,7 @@ var circuit = resistorDivider('1k', '500 ohm')
 
 - Implementation details:
   - Variable names are used as schematic references
-  - Circuit objects are explictely modified by adding connections
+  - Circuit objects are explicitly modified by adding connections
   - Function arguments are parameters not inputs/outputs
 ???
 
@@ -477,14 +503,14 @@ var circuit = resistorDivider('1k', '500 ohm')
 
 ---
 <a href=https://github.com/nturley/netlistsvg>
-<img class=fullscreen style=position:absolute;left:200px; src=../images/netlistsvg.png />
+<img class=fullscreen style=position:absolute;left:200px; src=images/netlistsvg.png />
 </a>
 
 ???
 
 - So even more recently I came across something called netlistsvg
 - This converts Yosys netlists to very nice looking schematics
-- This uses KlayJS, or soon to be ELKJS which is the Eclipse Layout Kernel under the hood
+- This uses ELKJS which is the Eclipse Layout Kernel under the hood
 - Which uses a similar algorithm to Graphviz
 
 
@@ -507,7 +533,7 @@ var circuit = resistorDivider('1k', '500 ohm')
 ---
 <img src=pycircuit_ce.svg class=fullscreen />
 ---
-# The language of electronics
+## The language of electronics
 <img src=images/oxford.jpg />
 
 ???
@@ -549,13 +575,17 @@ var circuit = resistorDivider('1k', '500 ohm')
 
 ---
 
-## Electro Grammar v1
+<a href=https://bom-builder.kitspace.org><img src=images/bom-builder.png></a>
+
+---
+
+### Electro Grammar v1
 
 - JavaScript only
 - Capacitors, resistors and LEDs (SMD only)
 - Lax parser only (any-order, ignores invalid input)
 
-## Electro Grammar v2
+### Electro Grammar v2
 
 - Work in progress!
 - Uses Antlr4: JavaScript, Python, Java, C (& C++), Go
@@ -564,33 +594,18 @@ var circuit = resistorDivider('1k', '500 ohm')
 
 ---
 
+## Should you use it?
 
-# Should you use it?
-
+<div style=font-size:27px>
 - PHDL: alpha (and some bitrot since 2012)
-- SKiDL: alpha
-- pycircuit: experimental
+- SKiDL: alpha (probably your best right now)
+- pycircuit: experimental (work stopped?)
 - replicad: vaporware?
 
 <img style=width:300px src="../images/stumble.png" />
 
 ---
-## What about footprints?
-
-- KicadModTree: a Python DSL for KiCad footprints
-
-- qeda: A Coffeescript/Javascript utility for schematic symbol and footprint generation
-
-## What about layout?
-
-- pycircuit: DSL for footprints, experimental layout and routing using SMT solvers
-
-- KiCad python scripting
-
----
-
-
-# What do people want when they want to make hardware more like software?
+### What do people want when they want to make hardware more like software?
 
 1. Fast build/test iteration cycles
 
@@ -607,15 +622,7 @@ var circuit = resistorDivider('1k', '500 ohm')
 - Either through language native module systems or otherwise
 
 ---
-# Diffs
-
-<img width=49% src=images/geda_diff.png/>
-<img width=49% src=images/schematic_diff_norm.jpg/>
-
-
-
----
-<img class=fullscreen src=../images/kitspace_full.svg />
+<img class=fullscreen src=images/kitspace_full_4_3.svg />
 
 ???
 
@@ -629,14 +636,13 @@ var circuit = resistorDivider('1k', '500 ohm')
 Questions?
 
 - github.com/kasbah
-
-<br/>
+- gitter.im/monostable/electro-grammar
 
 Thanks to:
 - Brent Nelson and co (PHDL),
-- Dave Vandebout (SKiDL),
+- Dave Vandenbout (SKiDL),
 - David Craven (pycircuit),
-- Neil Turely (netlistsvg)
+- Neil Turley (netlistsvg)
 - All contributors to:
    - Graphviz
    - ELK and ELKJS
