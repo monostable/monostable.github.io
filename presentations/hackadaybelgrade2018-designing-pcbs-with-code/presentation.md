@@ -1,6 +1,7 @@
 <video style="width:200%;left:0px;top:0px;position:absolute;" controls=false autoplay=true loop=true src=generative_circuit.mp4 />
 <h1 class=box_textshadow style="left:200px;top:100px;position:absolute;color:white" >Designing PCBs with code</h1>
 <h2 class=box_textshadow style="left:470px;top:200px;position:absolute;color:white" >by Kaspar Emanuel</h2>
+<h5 class=box_textshadow style="left:200px;top:400px;position:absolute;color:white" >slides: frama.link/hb18</h5>
 <h6 class=box_textshadow style="left:750px;top:550px;position:absolute;color:white" >animation: <a style=color:inherit; href=https://twitter.com/ExUtumno>@ExUtumno</a></h6>
 
 ???
