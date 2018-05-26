@@ -12,7 +12,7 @@ About Me
 
 - Freelance electronic engineer and software developer
 - Love writing code and love open source (especially electronics)
-- [github.com/kasbah](https://github.com/kasbah)
+- [github.com/kasbah](https://github.com/kasbah) | [hackaday.io/kasbah](https://hackaday.io/kasbah)
 
 ![](images/vrgo-braille-kitspace.png)
 
@@ -635,8 +635,8 @@ var circuit = resistorDivider('1k', '500 ohm')
 ---
 Questions?
 
-- github.com/kasbah
-- gitter.im/monostable/electro-grammar
+- [github.com/kasbah](https://github.com/kasbah) | [hackaday.io/kasbah](https://hackaday.io/kasbah)
+- [gitter.im/monostable/electro-grammar](https://gitter.im/monostable/electro-grammar)
 
 Thanks to:
 - Brent Nelson and co (PHDL),
