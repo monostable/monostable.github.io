@@ -7,5 +7,8 @@
   },
   "scripts": {
     "watch": "livereload . -e md,html,css,png,svg,jpg,jpeg"
+  },
+  "dependencies": {
+    "decktape": "^2.8.3"
   }
 }
