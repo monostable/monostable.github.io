@@ -20,7 +20,7 @@ class: center, middle
 
 ---
 
-Through-hole
+#Through-hole
 <div style=float:left>
 <video style="height:300px" controls=false autoplay=true loop=true src=images/solder.mp4 />
 </div>
@@ -30,7 +30,8 @@ Through-hole
 - You can have through hole components where the legs stick through a hole in the boord
 
 ---
-Surface mount technology (SMT) or Surface mount device (SMD)
+#Surface mount technology (SMT) or Surface mount device (SMD)
+
 <img src=images/soldering_smd.gif />
 
 
@@ -39,7 +40,7 @@ Surface mount technology (SMT) or Surface mount device (SMD)
 - And you can have surface mount components, which are often shortened to SMT or SMD
 
 ---
-Reflow soldering
+#Reflow soldering
 
 <img style="height:300px;float:left" src=images/reflow.gif />
 <img style="height:300px;float:right" src=images/oven.jpg />
@@ -52,7 +53,7 @@ Reflow soldering
 - Often people hack toaster ovens to have more control over the temperature curve
 ---
 
-## Learn more at your local hackspace!
+# Learn more at your local hackspace!
 
 <img style="height:100px" src=images/steamhead.png />
 <img style="height:100px" src=images/szdiy.png />
@@ -143,11 +144,7 @@ class: center, middle
 
 ---
 
-<img src=images/kitnic_logo.png />kitspace.org
-
-<center>
 <img class=fullscreen src=images/meat_apart.jpg>
-</center>
 
 ???
 
