@@ -52,6 +52,86 @@ class: center, middle
 - Often people hack toaster ovens to have more control over the temperature curve
 ---
 
+## Printed Circuit Board Etching
+
+<img class=fullscreen src=../fosdem2018-making-electronics/images/etching.svg />
+
+???
+
+- But of course, this get tedious so etching connections into copper-clad fiberglass can be much less tedious
+- You can do this at home, you print onto a copper-clad board which will resist an acidic bath and leave you with just the connections that you want
+
+---
+
+## Gerber Files
+
+<img src=../fosdem2018-making-electronics/images/tracespace.png width=100% />
+
+???
+
+- What you are looking for in an OSHW project are the gerber files
+- These describe the printed circuit board design
+- And what you'll find if you look at the gerber files of a typical OSHW electronics project
+- You will see multiple layers
+- Tiny drills
+- A solder resit and a silkscreen layer
+
+---
+
+<img class=fullscreen src=../fosdem2018-making-electronics/images/manufacture.svg />
+
+???
+
+- So, for these you really need an industrial process
+- On the whole they use a similar etching process to what you can do at home but they have a lot more accurary and they have further steps which are harder to do at home
+- You get a nice silkscreen or ident layer which help you see where components are supposed to go, you get solder resist which helps you keep the solder where it needs to be
+- You have much more accurate drillng and the drills themselves are internally plated through electro-plating, so they can make connections between layers
+- And you can have many more layers laminated together
+
+
+---
+# PCB Batching Services
+
+<div style=display:flex>
+<div style=width:50%>
+<li> Accutrace PCB4U
+<li> Advanced Circuits (4PCB)</li>
+<li> Aisler.net
+<li> ALLPCB
+<li> AP Circuits
+<li> BasicPCB
+<li> Bay Area Circuits
+<li> Bittele (7pcb)
+<li> Breadboard Killer
+<li> Dirty PCBs
+<li> EasyEDA
+<li> Elecrow
+<li> Eurocircuits
+</div>
+<div>
+<li> ExpressPCB
+<li> ITEAD Studio
+<li> OSH Park
+<li> PCB Zone
+<li> PCB-POOL
+<li> PCBCART
+<li> PCBJOINT
+<li> PCBWay
+<li> Ragworm
+<li> Seeed Studio
+<li> ShenZhen2U
+<li> Smart Prototyping
+<li> U&I (quickturnpcb)
+</div>
+</div>
+
+???
+
+- And it's cheap
+- There are so many places where you can order your PCBs these days and get them within a few weeks for under 20 euros, it's pretty insane compared to 10 years ago
+
+---
+
 # Learn more at your local hackspace!
 
 <img style="height:100px" src=images/steamhead.png />
