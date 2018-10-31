@@ -1,0 +1,12 @@
+digraph G {
+    "Copper Clad Boards" [shape=box]
+    "Etching" -> "Lamination" [constraint=false]
+    subgraph cluster2 {
+        graph[style=invis]
+        "Lamination" -> "Plating & Coating" -> "Solder Resist Mask" -> "Ident / Silkscreen"
+    }
+    subgraph cluster0 {
+        "Patterning" -> "Exposure" -> "Etching"
+    }
+    "Copper Clad Boards" -> "Drill" -> "Patterning"
+}
