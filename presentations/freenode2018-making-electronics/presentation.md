@@ -3,6 +3,7 @@
 <video style="width:200%;left:0px;top:0px;position:absolute;" controls=false autoplay=true loop=true src=../images/generative_circuit.mp4 />
 <h1 class=box_textshadow style="left:200px;top:100px;position:absolute;color:white" >Making Electronics</h1>
 <h2 class=box_textshadow style="left:470px;top:200px;position:absolute;color:white" >by Kaspar Emanuel</h2>
+<h2 class=box_textshadow style="left:470px;top:300px;position:absolute;color:white" >slides: frama.link/ee18</h2>
 <h6 class=box_textshadow style="left:800px;top:600px;position:absolute;color:white" >animation: <a style=color:inherit; href=https://twitter.com/ExUtumno>@ExUtumno</a></h6>
 
 ???
