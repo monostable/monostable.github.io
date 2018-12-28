@@ -200,7 +200,6 @@ Automates purchasing by replicating the web requests that are sent when you use 
 - Available for Chrome and Firefox
 - Goes from spreadsheet to shopping cart
 - Can load a online BOM
-- Able to add to and remove from cart
 
 ---
 <div style=width:100%;display:flex;justify-content:center;>
