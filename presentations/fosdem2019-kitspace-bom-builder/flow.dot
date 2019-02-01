@@ -1,0 +1,14 @@
+digraph G {
+    subgraph cluster0 {
+        label="Client"
+        "BOM Builder"
+    }
+    subgraph cluster1 {
+        label="           Server"
+        Partinfo
+    }
+    "BOM Builder" -> Partinfo [label=" Graphql HTTP Query"]
+    Partinfo -> "Octopart API" [label="  HTTP"]
+    Partinfo -> "Farnell API" [label="  HTTP"]
+    Partinfo -> "..."
+}
