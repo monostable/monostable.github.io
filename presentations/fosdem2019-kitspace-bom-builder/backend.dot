@@ -1,0 +1,8 @@
+digraph G {
+    "Client" [shape=box]
+    "Client" -> graphql [dir=both]
+    graphql -> octopart
+    graphql -> "electro grammar" -> octopart
+    octopart -> farnell -> "..."
+    "..." -> graphql
+}
