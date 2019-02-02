@@ -54,3 +54,16 @@ DRAWING PCBS WITH INKSCAPE AND KICAD
 <img class=fullscreen src=images/maulwurf.svg />
 ---
 <img class=fullscreen src=images/svg2shenzhen.svg />
+---
+
+> from: dana.zhang@allpcb.com
+
+"The CAM350 software crashed when opening this file, pls check and re-upload"
+
+---
+
+
+[![](images/patreon.png)](https://patreon.com/badgeek)
+
+<font size=120>
+[patreon.com/badgeek](https://patreon.com/badgeek)
