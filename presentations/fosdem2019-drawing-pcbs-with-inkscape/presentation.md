@@ -1,6 +1,8 @@
 <p style=font-size:100px>
 DRAWING PCBS WITH INKSCAPE AND KICAD
 
+slides: frama.link/drawpcb
+
 ---
 <img class=fullscreen src=images/substrate.svg />
 
