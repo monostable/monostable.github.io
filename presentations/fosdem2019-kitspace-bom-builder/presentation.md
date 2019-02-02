@@ -85,7 +85,7 @@ class: center, middle
 ---
 <img class=fullscreen src=images/collective.svg />
 ---
-# ~~Questions?~~
+# Questions?
 - [bom-builder.kitspace.org](https://kitspace.org)
 - [kitspace.org](https://kitspace.org)
 - [opencollective.com/kitspace](https://opencollective.com/kitspace)
