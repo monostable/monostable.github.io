@@ -64,6 +64,7 @@ slides: frama.link/drawpcb
 
 ---
 
+[frama.link/drawexample](https://github.com/kasbah/svg2sz-fosdem19)
 
 [![](images/patreon.png)](https://patreon.com/badgeek)
 
