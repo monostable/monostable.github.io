@@ -4,15 +4,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> monostable.co.uk </title>
         <style>
-            div#main {
-                width:400px;
-                height:300px;
-                position:absolute;
-                top:50%;
-                left:50%;
-                margin-top: -150px;
-                margin-left:-200px;
-            }
             a { color: #2A2A2A ; text-decoration:none}
             a:hover { text-decoration:underline;}
             body {
@@ -27,8 +18,9 @@
         <link href="favicon.png" rel="shortcut icon" type="image/png">
     <head>
     <body>
-        <div id=main>
-            <a href=https://blog.monostable.co.uk><img src=banner.png></a>
+        <div style="height:95vh; display: flex; justify-content: center; align-items: center;">
+        <div style="max-width:80%;">
+            <a href=https://github.com/kasbah><img style="max-width:100%;" src=banner.png /></a>
             <div style=display:flex;flex-wrap:wrap;max-width:400px;justify-content:space-evenly>
                 <div class='linkBox'><a href=https://kitspace.org>kitspace.org</a></div>
                 <div class='linkBox'>~</div>
@@ -42,6 +34,7 @@
                 <div class='linkBox'><a href=presentations/>presentations</a></div>
                 <div class='linkBox'><div><a href=https://reseq.hackteria.org>reseq.hackteria.org</a></div></div>
             </div>
+        </div>
         </div>
     </body>
 </html>
